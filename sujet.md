@@ -18,19 +18,18 @@ les tissus des rayonnements. Cependant, alors que le logiciel n'était prévu po
 de la configuration et du sens du trou. Dans certains cas, la dose était correcte et dans d'autres, l'exposition nécessaire a été doublée. En 2001, cela a provoqué la mort de 8 patients 20 blessés susceptibles de développer des problèmes de santé. Les médecins ont été également condamnés pour meutre car ils étaient censés vérifier la dose à la main. Le logiciel aurotisait des formes incorrectes de données, ce qui a provoqué des erreurs de calcul des temps de traitement. Selon nous, ce bug est un bug plutôt local car ce sont des erreurs d'input d'une probable API qui ont provoqué un traitement inattendu. Le bug aurait pu être probablement corrigé en vérifiant les données reçues. Des tests unitaires auraient pu être être suffisants pour le détecter.
 
 2) 
-    Problème : UnmodifiableNavigableSet peut être modifié par pollFirst() et pollLast()
-     lien : https://issues.apache.org/jira/projects/COLLECTIONS/issues/COLLECTIONS-799?filter=doneissues
+    Problème : UnmodifiableNavigableSet peut être modifié par pollFirst() et pollLast(). 
+    link issue : https://issues.apache.org/jira/projects/COLLECTIONS/issues/COLLECTIONS-799?filter=doneissues
     
     Description de l'erreur : les deux methodes pollFirst et pollLast ne lèvent pas d'exception de type 
-    ''' UnsupportedOperationException ```UnmodifiableNavigableSet```. 
+    '''UnsupportedOperationException``` sur un ```UnmodifiableNavigableSet```. 
     
     pollFirst() : cette fonction permet de recupérer et supprimer le premier élément (le plus bas) dans un ensemble d'éléments. renvoie null si l'ensemble est vide. 
     PollLast() : Cette focntion nous eprmet de récupérer et suppriemr le dernier élément (le plus haut) dans un ensemble d'éléments. Renvoie null si l'ensemble est vide. 
 
-    La solution apportée : ils ont ajouté l'exception ```UnsupportedOperationException``` dans les methodes pollFirst() et pollLast()
-    et aussi dans son code ils également rajoutés une condition pour tester que l'appelle aux deux methodes se fait sur les ensmebles NavigateSet,
-    ainsi ils ont rajouté des tests un try catch pour lancer l'exception ```UnsupportedOperationException``` dans le cas ou les methode lèvent l'exception.  
-    
+    La solution apportée : ils ont réimplementés les deux méthodes pollFirst() et pollLast() de l'interface '''NavigableSet``` et ils également rajouté l'exception ```UnsupportedOperationException``` dans les deux methodes. 
+    Aussi, ils ont fait des tests, et dans les tests ils ont mis un try catch et une condition (if),  l'appel des deux methodes se fait sur un '''NavigableSet```. 
+
     Ici la reimplémentation des deux methodes pollFirst() et pollLast()
     ```java
       /**
