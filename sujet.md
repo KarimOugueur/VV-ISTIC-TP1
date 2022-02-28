@@ -29,8 +29,9 @@ de la configuration et du sens du trou. Dans certains cas, la dose était correc
 
     La solution apportée : ils ont ajouté l'exception ```UnsupportedOperationException``` dans les methodes pollFirst() et pollLast()
     et aussi dans son code ils également rajoutés une condition pour tester que l'appelle aux deux methodes se fait sur les ensmebles NavigateSet,
-    ainsi un try catch pour lancer l'exception ```UnsupportedOperationException``` dans le cas ou les methode lèvent l'exception.  
+    ainsi ils ont rajouté des tests un try catch pour lancer l'exception ```UnsupportedOperationException``` dans le cas ou les methode lèvent l'exception.  
     
+    Ici la reimplémentation des deux methodes pollFirst() et pollLast()
     ```java
       /**
      * @since 4.5
@@ -48,6 +49,8 @@ de la configuration et du sens du trou. Dans certains cas, la dose était correc
         throw new UnsupportedOperationException();
     }
     ``` 
+
+Test : 
 
     ```java
     if (set instanceof NavigableSet) {
