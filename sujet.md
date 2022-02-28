@@ -16,3 +16,55 @@
 C'est une société qui développe un logiciel de planification de la thérapie. Elle calcule la dose de rayonnement appropriée pour les patients soumis à une radiothérapie. En effet, ce logiciel permet aux radiothérapeutes de tracer sur un écran d'ordinateur des blocs (boucliers métalliques) afin de protéger 
 les tissus des rayonnements. Cependant, alors que le logiciel n'était prévu pour dessiner que 4 blocs, les médecins ont détourné l'utilisation de ce système en réussissant à ajouter un cinquième bloc. Cinq blocs sont déssinés comme un seul gros bloc avec un trou au milieu. Le logiciel, lui, répond différement en fonction 
 de la configuration et du sens du trou. Dans certains cas, la dose était correcte et dans d'autres, l'exposition nécessaire a été doublée. En 2001, cela a provoqué la mort de 8 patients 20 blessés susceptibles de développer des problèmes de santé. Les médecins ont été également condamnés pour meutre car ils étaient censés vérifier la dose à la main. Le logiciel aurotisait des formes incorrectes de données, ce qui a provoqué des erreurs de calcul des temps de traitement. Selon nous, ce bug est un bug plutôt local car ce sont des erreurs d'input d'une probable API qui ont provoqué un traitement inattendu. Le bug aurait pu être probablement corrigé en vérifiant les données reçues. Des tests unitaires auraient pu être être suffisants pour le détecter.
+
+2) 
+    Problème : UnmodifiableNavigableSet peut être modifié par pollFirst() et pollLast()
+     lien : https://issues.apache.org/jira/projects/COLLECTIONS/issues/COLLECTIONS-799?filter=doneissues
+    
+    Description de l'erreur : les deux methodes pollFirst et pollLast ne lèvent pas d'exception de type 
+    ''' UnsupportedOperationException ```UnmodifiableNavigableSet```. 
+    
+    pollFirst() : cette fonction permet de recupérer et supprimer le premier élément (le plus bas) dans un ensemble d'éléments. renvoie null si l'ensemble est vide. 
+    PollLast() : Cette focntion nous eprmet de récupérer et suppriemr le dernier élément (le plus haut) dans un ensemble d'éléments. Renvoie null si l'ensemble est vide. 
+
+    La solution apportée : ils ont ajouté l'exception ```UnsupportedOperationException``` dans les methodes pollFirst() et pollLast()
+    et aussi dans son code ils également rajoutés une condition pour tester que l'appelle aux deux methodes se fait sur les ensmebles NavigateSet,
+    ainsi un try catch pour lancer l'exception ```UnsupportedOperationException``` dans le cas ou les methode lèvent l'exception.  
+    
+    ```java
+      /**
+     * @since 4.5
+     */
+    @Override
+    public E pollFirst() {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * @since 4.5
+     */
+    @Override
+    public E pollLast() {
+        throw new UnsupportedOperationException();
+    }
+    ``` 
+
+    ```java
+    if (set instanceof NavigableSet) {
+            final NavigableSet<E> navigableSet = (NavigableSet<E>) set;
+
+            try {
+                navigableSet.pollFirst();
+                fail("Expecting UnsupportedOperationException.");
+            } catch (final UnsupportedOperationException e) {
+                // expected
+            }
+            try {
+                navigableSet.pollLast();
+                fail("Expecting UnsupportedOperationException.");
+            } catch (final UnsupportedOperationException e) {
+                // expected
+            }
+        }
+    }
+    ```
