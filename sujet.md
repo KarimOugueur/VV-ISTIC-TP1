@@ -70,3 +70,7 @@ Test :
         }
     }
     ```
+    3) Netflix utilise une technique assez répandue dans ses systèmes afin d'améliorer l'expérience utilisateur mais également de détecter des défaillances. Cette technique correspond au Chaos Engineering. Les ingénieurs injectent des défaillances dans des services non critiques et vérifient que celles-ci ont un impact minimal sur l'utilisateur. Afin de formaliser une expérience dans l'approche de l'ingénierie du chaos, il est nécessaire de formuler une hypothèse, varier les évènements réels, réaliser des expériences en production et les automatiser pour les faire fonctionner en continu. L'objectif est de comparer l'état stable du système et l'état expérimental afin de réfuter ou valider l'hypothèse de départ.
+Par exemple, ils ont injecté une défaillance dans les signets de Netflix, celle-ci n'est pas sensée perturber la diffusion en direct. Cette défaillance aura un impact sur une partie des utilisateurs (groupe expérimental). Ensuite, ils comparent le SPS ("start par seconde" ou le nombre de personnes commençant à regarder une vidéo par seconde) entre le groupe contrôle (celui qui n'a pas la défaillance) et le groupe expérimental. Un changement inattendu du SPS pourra déterminer un problème dans le système. Cette métrique sert de principal indicateur de la sante globale du système Netflix.
+D'autres entreprises utilisent des approches semblables comme par exemple AWS d'Amazon. Le problème est que ces entreprises ne documentent pas forcément leurs pratiques.
+// TODO FINIR question // 
